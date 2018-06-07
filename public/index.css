@@ -1,0 +1,38 @@
+.commandPanel > div > div {
+    display: inline-block;
+}
+.commandPanel > div.command {
+    border: solid silver 1px;
+}
+.commandPanel > div.command > div.name {
+    width: 200px;
+    background-color: #ffe;
+}
+.commandPanel > div.command > div.params {
+    width: 210px;
+    background-color: #fef;
+}
+.commandPanel > div.command > div.params > div.param > div {
+    display: inline-block;
+}
+.commandPanel > div.command > div.params > div.param > div.name {
+    text-align: right;
+    width: 100px;
+}
+.commandPanel > div.command > div.params > div.param > div.input {
+    width: 100px;
+}
+.commandPanel > div.command > div.params > div.param > div.input > input{
+    width: 100px;
+}
+.commandPanel > div.command > div.button {
+    width: 71px;
+    background-color: #eff;
+}
+.commandPanel > div.command > div.button > button {
+    width:70px;
+};
+.commandPanel > div.command > div.result {
+    width: 300px;
+    background-color: #fee;
+}
