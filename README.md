@@ -9,7 +9,7 @@ you must create a clientId and an apiKey in the project of the Google Developer 
 You should use a bundler to use this module.
 
 ```javascript
-const Gdfs = require("gdfs");
+const Gdfs = require("gdrive-fs");
 const connectGdfs = async() => {
     Gdfs.signInStatusChangeEvent.listen(() => runGdfs());
     await Gdfs.loadApi({
