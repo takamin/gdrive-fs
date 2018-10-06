@@ -1,8 +1,8 @@
+/* globals Gdfs */
 "use strict";
 localStorage.debug = "*";
-const debug = require("debug")("gdrive-fs-app");
+const debug = require("debug")("gdrive/public/index.js");
 debug("loading");
-const Gdfs = require("../index.js");
 const Cookies = require("js-cookie");
 
 const main = () => {
@@ -29,24 +29,7 @@ const main = () => {
             debug(`clientId: ${clientId}`);
             debug(`apiKey: ${apiKey}`);
             createAuthPanel(authPanel, fileDlgs);
-            await Gdfs.loadApi({
-                // Client ID and API key from the Developer Console
-                clientId: clientId,
-                apiKey: apiKey,
-                // Array of API discovery doc URLs for APIs used by the quickstart
-                discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"],
-                // Authorization scopes required by the API; multiple scopes can be
-                // included, separated by spaces.
-                scope: [
-                    "https://www.googleapis.com/auth/drive",
-                    "https://www.googleapis.com/auth/drive.appdata",
-                    "https://www.googleapis.com/auth/drive.file",
-                    "https://www.googleapis.com/auth/drive.metadata",
-                    "https://www.googleapis.com/auth/drive.metadata.readonly",
-                    "https://www.googleapis.com/auth/drive.photos.readonly",
-                    "https://www.googleapis.com/auth/drive.readonly",
-                ].join(" "),
-            });
+            await Gdfs.loadApi(clientId, apiKey);
             Cookies.set("clientId", clientId, { "expires" : 365 * 100 });
             Cookies.set("apiKey", apiKey, { "expires" : 365 * 100 });
             if(Gdfs.isSignedIn()) {
