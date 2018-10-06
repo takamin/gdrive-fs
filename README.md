@@ -6,27 +6,11 @@ Google Drive API client for Web App.
 To connect your google drive files from your Web App,
 you must create a clientId and an apiKey in the project of the Google Developer Console.
 
-You should use a bundler to use this module.
-
 ```javascript
 const Gdfs = require("gdrive-fs");
 const connectGdfs = async() => {
     Gdfs.signInStatusChangeEvent.listen(() => runGdfs());
-    await Gdfs.loadApi({
-        clientId: "<clientId>",
-        apiKey: "<apiKey>",
-        discoveryDocs:
-            ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"],
-        scope: [
-            "https://www.googleapis.com/auth/drive",
-            "https://www.googleapis.com/auth/drive.appdata",
-            "https://www.googleapis.com/auth/drive.file",
-            "https://www.googleapis.com/auth/drive.metadata",
-            "https://www.googleapis.com/auth/drive.metadata.readonly",
-            "https://www.googleapis.com/auth/drive.photos.readonly",
-            "https://www.googleapis.com/auth/drive.readonly",
-        ].join(" "),
-    });
+    await Gdfs.loadApi(<clientId>, <apiKey>);
     if(Gdfs.isSignedIn()) {
         runGdfs();
     }
@@ -51,6 +35,52 @@ A sample is here:
 
 * [./public/index.html](./public/index.html)
 * [./public/index.js](./public/index.js)
+
+INSTALL
+-------
+
+To install, use npm for your project.
+
+```bash
+$ npm install --save gdrive-fs
+```
+
+USING WITH BUNDLER
+------------------
+
+If you are using some bundler, you can just import this module and use.
+
+```javascript
+const Gdfs = require("gdrive-fs");
+Gdfs.loadApi(
+.
+.
+.
+```
+
+USING WITHOUT BUNDLER
+--------------------
+
+If you do not use any bundler, the following built files are available to include by SCRIPT tag.
+
+* `node_module/gdrive-fs/build/grive-fs.min.js`
+* `node_module/gdrive-fs/build/grive-fs.js`
+
+```xml
+<!DOCTYPE html>
+<html>
+<head>
+...
+<script src="<path-to-gdrive-fs>/build/gdrive-fs.min.js"></script>
+</body>
+```
+
+BUILD DISTRIBUTIONS
+------------------
+
+```bash
+$ npm run release
+```
 
 LICENSE
 -------

@@ -5,6 +5,7 @@
   "main": "gdrive-fs.js",
   "scripts": {
     "generate-docs": "jsdoc --configure jsdoc.json --verbose",
+    "release": "parcel build index.js --detailed-report -d build -o gdrive-fs.min.js && parcel build index.js --no-minify --no-source-maps --detailed-report -d build -o gdrive-fs.js",
     "lint": "eslint",
     "opn": "node -e require('opn')('http://localhost:1234/')",
     "parcel": "parcel",
