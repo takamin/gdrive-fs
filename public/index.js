@@ -1,9 +1,9 @@
-/* globals Gdfs */
 "use strict";
 localStorage.debug = "*";
 const debug = require("debug")("gdrive/public/index.js");
 debug("loading");
 const Cookies = require("js-cookie");
+const Gdfs = require("../index.js");
 
 const main = () => {
     const authPanel = document.querySelector("#google-drive-auth-panel");
@@ -97,6 +97,40 @@ const createAuthPanel = (authPanel, fileDlgs) => {
 
 const createFileList = (element) => {
     debug("Start of createFileList");
+
+    const gdfsUi = new Gdfs.Ui(element, {
+        onFileListChange: async () => {
+            debug("Start of onFileListChange");
+            updateButtons();
+            debug("End of onFileListChange");
+        },
+        onCurrentDirChange: async () => {
+            debug("Start of onCurrentDirChange");
+            try {
+                // Create paths
+                const path = gdfsUi.getCurrentPath();
+                const pankuzuItems = path.map(file => createElement("A",
+                    { href:"javascript:void(0);" },
+                    (file.id === "root" ? "(root)" : file.name),
+                    { "click": async () => await gdfsUi.chdirById(file.id) })
+                );
+                insertBetweenEachItem(pankuzuItems, () => text(" / "));
+
+                debug("CurrentDirChange pankuzu");
+                pankuzu.innerHTML = "";
+                for(const content of pankuzuItems) {
+                    pankuzu.appendChild(content);
+                }
+
+                debug("CurrentDirChange listFiles");
+                await listFiles(0);
+
+            } catch(err) {
+                console.error(err.stack);
+            }
+            debug("End of onCurrentDirChange");
+        },
+    });
 
     const pageSize = 10;
     let currentPage = 0;
@@ -206,40 +240,6 @@ const createFileList = (element) => {
         updateButtons();
     };
 
-    const gdfsUi = new Gdfs.Ui(element, {
-        onFileListChange: async () => {
-            debug("Start of onFileListChange");
-            updateButtons();
-            debug("End of onFileListChange");
-        },
-        onCurrentDirChange: async () => {
-            debug("Start of onCurrentDirChange");
-            try {
-                // Create paths
-                const path = gdfsUi.getCurrentPath();
-                const pankuzuItems = path.map(file => createElement("A",
-                    { href:"javascript:void(0);" },
-                    (file.id === "root" ? "(root)" : file.name),
-                    { "click": async () => await gdfsUi.chdirById(file.id) })
-                );
-                insertBetweenEachItem(pankuzuItems, () => text(" / "));
-
-                debug("CurrentDirChange pankuzu");
-                pankuzu.innerHTML = "";
-                for(const content of pankuzuItems) {
-                    pankuzu.appendChild(content);
-                }
-
-                debug("CurrentDirChange listFiles");
-                await listFiles(0);
-
-            } catch(err) {
-                console.error(err.stack);
-            }
-            debug("End of onCurrentDirChange");
-        },
-    });
-
     element.innerHTML = "";
     element.appendChild(text("CWD: "));
     element.appendChild(pankuzu);
@@ -317,6 +317,28 @@ const createCommandPanel = (root, gdfsUi) => {
         {name:"data","type":"string"},
     ], async (path, mimeType, data) =>
         await gdfsUi._gdfs.writeFile(path, mimeType, data));
+    createExecuter(root, "Gdfs#readdir",
+        [
+            {name:"path","type":"string"},
+            {name:"pageSize","type":"integer"},
+            {name:"pageToken","type":"string"},
+        ],
+        async (path, pageSize, pageToken) => {
+            const options = ((!pageToken && !pageSize) ? null : {
+                pageSize: pageSize,
+                pageToken: pageToken ? pageToken : null,
+            });
+            const files = await gdfsUi._gdfs.readdir(path, options);
+            const outopts = options || {};
+            return {
+                result: files,
+                pageToken: outopts.pageToken || null,
+            };
+        }
+    );
+    createExecuter(root, "Gdfs#stat",
+        [{name:"path","type":"string"}],
+        async path => await gdfsUi._gdfs.stat(path));
     return root;
 };
 
@@ -351,6 +373,11 @@ const createExecuter = (root, name, params, execHandler) => {
                     `${baseSelector} input.${toName(param.name)}`);
                 return inputString.value;
             }
+            case "integer": {
+                const inputString = root.querySelector(
+                    `${baseSelector} input.${toName(param.name)}`);
+                return parseInt(inputString.value);
+            }
             default:
                 break;
             }
@@ -359,13 +386,19 @@ const createExecuter = (root, name, params, execHandler) => {
         try {
             debug(`Invoke ${name} args: ${JSON.stringify(args)}`);
             const result = execHandler.apply(null, args);
+            const setHTML = value => {
+                if(typeof(value) === "object") {
+                    txtResult.innerHTML = JSON.stringify(value, null, "  ");
+                } else {
+                    txtResult.innerHTML = value == null ? "(null)" : value;
+                }
+            };
             if(result == null) {
-                txtResult.innerHTML = "(undefined)";
+                setHTML("(undefined)");
             } else if(result.constructor === Promise) {
-                const value = await result;
-                txtResult.innerHTML = value == null ? "(null)" : value;
+                setHTML(await result);
             } else {
-                txtResult.innerHTML = result == null ? "(null)" : result;
+                setHTML(result);
             }
         } catch(err) {
             debug(err.stack);
