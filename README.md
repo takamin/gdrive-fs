@@ -1,37 +1,35 @@
 gdrive-fs
 =========
 
-Google Drive API client for Web App.
+Google Drive API client for Web Application.
 
-To connect your google drive files from your Web App,
-you must create a clientId and an apiKey in the project of the Google Developer Console.
+A brief explanation is described in a documet for the class
+[Gdfs](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs.html).
 
-```javascript
-const Gdfs = require("gdrive-fs");
-const connectGdfs = async() => {
-    Gdfs.signInStatusChangeEvent.listen(() => runGdfs());
-    await Gdfs.loadApi(<clientId>, <apiKey>);
-    if(Gdfs.isSignedIn()) {
-        runGdfs();
-    }
-};
+APIs
+----
 
-const runGdfs = async () => {
+* Class [Gdfs](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs.html) as a client of the Google Drive file system.
+    * Class methods
+        * [loadApi()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#.loadApi).
+        * [isSignedIn()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#.isSignedIn).
+        * [signIn()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#.signIn).
+        * [signOut()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#.signOut).
+    * Instance methods
+        * [chdir()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#chdir).
+        * [cwd()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#cwd).
+        * [isDirectory()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#isDirectory).
+        * [mkdir()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#mkdir).
+        * [readdir()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#readdir).
+        * [readFile()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#readFile).
+        * [rmdir()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#rmdir).
+        * [stat()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#stat).
+        * [unlink()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#unlink).
+        * [writeFile()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#writeFile).
+* Class [Gdfs.Path](https://takamin.github.io/gdrive-fs/jsdoc/GdfsPath.html) - as representation of path for the Google Drive files.
+* Class [Gdfs.Ui](https://takamin.github.io/gdrive-fs/jsdoc/GdfsUi.html)(alpha) - A class supporting to create UI.
 
-    const gdfs = new Gdfs();
-
-    await gdfs.chdir(path);
-    const cwd = gdfs.cwd();
-    await gdfs.mkdir(path);
-    const content = await gdfs.readFile(path);
-    await gdfs.rmdir(path);
-    await gdfs.unlink(path);
-    await gdfs.writeFile(path, mimeType, data);
-};
-connectGdfs();
-```
-
-A sample is here:
+A file listing sample for Gdfs.UI is here:
 
 * [./public/index.html](./public/index.html)
 * [./public/index.js](./public/index.js)
