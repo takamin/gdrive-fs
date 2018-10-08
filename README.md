@@ -11,28 +11,23 @@ APIs
 
 * Class [Gdfs](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs.html) as a client of the Google Drive file system.
     * Class methods
-        * [loadApi()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#.loadApi).
-        * [isSignedIn()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#.isSignedIn).
-        * [signIn()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#.signIn).
-        * [signOut()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#.signOut).
+        * async [`loadApi(clientId, apiKey)`](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#.loadApi) loads Google Drive APIs(v3) and initializes its client.
+        * [`isSignedIn()`](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#.isSignedIn) tests the client is signed-in to the Google Drive.
+        * async [`signIn()`](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#.signIn) signs-in with a Google Account.
+        * async [`signOut()`](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#.signOut) signs-out.
     * Instance methods
-        * [chdir()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#chdir).
-        * [cwd()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#cwd).
-        * [isDirectory()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#isDirectory).
-        * [mkdir()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#mkdir).
-        * [readdir()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#readdir).
-        * [readFile()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#readFile).
-        * [rmdir()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#rmdir).
-        * [stat()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#stat).
-        * [unlink()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#unlink).
-        * [writeFile()](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#writeFile).
+        * async [`chdir(directory)`](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#chdir) changes the current working directory.
+        * [`cwd()`](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#cwd) - returns the current working directory.
+        * async [`isDirectory(path)`](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#isDirectory) tests the path is a directory.
+        * async [`mkdir(path)`](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#mkdir) creates a folder.
+        * async [`readdir(path, options)`](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#readdir) lists file names.
+        * async [`readFile(path)`](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#readFile) read the file contents.
+        * async [`rmdir(path)`](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#rmdir) removes the directory.
+        * async [`stat(path)`](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#stat) returns properties of Google Drive files.
+        * async [`unlink(path)`](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#unlink) removes the file (without moving to the trash-box).
+        * async [`writeFile(path, mimeType, data)`](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#writeFile) writes data to the file.
 * Class [Gdfs.Path](https://takamin.github.io/gdrive-fs/jsdoc/GdfsPath.html) - as representation of path for the Google Drive files.
 * Class [Gdfs.Ui](https://takamin.github.io/gdrive-fs/jsdoc/GdfsUi.html)(alpha) - A class supporting to create UI.
-
-A file listing sample for Gdfs.UI is here:
-
-* [./public/index.html](./public/index.html)
-* [./public/index.js](./public/index.js)
 
 INSTALL
 -------
