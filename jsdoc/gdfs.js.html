@@ -2,35 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>gdfs.js - Documentation</title>
+    <title>JSDoc: Source: gdfs.js</title>
 
-    <script src="scripts/prettify/prettify.js"></script>
-    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
 </head>
+
 <body>
 
-<input type="checkbox" id="nav-trigger" class="nav-trigger" />
-<label for="nav-trigger" class="navicon-button x">
-  <div class="navicon"></div>
-</label>
-
-<label for="nav-trigger" class="overlay"></label>
-
-<nav>
-    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Gdfs.html">Gdfs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#.createClient">createClient</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#.createFile">createFile</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#.downloadFile">downloadFile</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#.findFileByName">findFileByName</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#.findFolderByName">findFolderByName</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#.getActualRootFolderId">getActualRootFolderId</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#.getFileList">getFileList</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#.getFileResource">getFileResource</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#.isFolder">isFolder</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#.isSignedIn">isSignedIn</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#.loadApi">loadApi</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#.signIn">signIn</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#.signOut">signOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#.updateFile">updateFile</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#chdir">chdir</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#chdirById">chdirById</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#cwd">cwd</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#fireCwdUpdate">fireCwdUpdate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#getCurrentFolderId">getCurrentFolderId</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#getCurrentPath">getCurrentPath</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#getFileOfPath">getFileOfPath</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#getPaths">getPaths</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#isDirectory">isDirectory</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#mkdir">mkdir</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#onCwdUpdate">onCwdUpdate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#readdir">readdir</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#readFile">readFile</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#rmdir">rmdir</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#setCurrentPath">setCurrentPath</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#stat">stat</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#toAbsolutePath">toAbsolutePath</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#unlink">unlink</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Gdfs.html#writeFile">writeFile</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="GdfsEvent.html">GdfsEvent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GdfsEvent.html#fire">fire</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GdfsEvent.html#listen">listen</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="GdfsPath.html">GdfsPath</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GdfsPath.html#.merge">merge</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GdfsPath.html#elements">elements</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GdfsPath.html#getFilename">getFilename</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GdfsPath.html#getPathPart">getPathPart</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GdfsPath.html#isAbsolute">isAbsolute</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GdfsPath.html#isDirSpec">isDirSpec</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GdfsPath.html#parse">parse</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GdfsPath.html#toString">toString</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="GdfsUi.html">GdfsUi</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GdfsUi.html#chdirById">chdirById</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GdfsUi.html#getCurrentPath">getCurrentPath</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GdfsUi.html#getFileResource">getFileResource</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GdfsUi.html#getFiles">getFiles</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GdfsUi.html#isPageCompleted">isPageCompleted</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GdfsUi.html#readDir">readDir</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GdfsUi.html#reload">reload</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GdfsUi.html#uploadFile">uploadFile</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GdfsUi.html#writeFile">writeFile</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#createUrl">createUrl</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#getAccessToken">getAccessToken</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#requestWithAuth">requestWithAuth</a></span></li>
-</nav>
-
 <div id="main">
-    
-    <h1 class="page-title">gdfs.js</h1>
-    
+
+    <h1 class="page-title">Source: gdfs.js</h1>
 
     
 
@@ -62,16 +49,6 @@ const GdfsPath = require("./gdfs-path.js");
  * Instance's CWD is initialized to the root on constructor. It can be changed
  * by [chdir](#chdir) method. When it is changed, the 'oncwdupdate' callback
  * is fired. To know where the CWD is, The [cwd](#cwd) method is available.
- *
- * For details of file operations, see the document of each methods:
- *
- * * [readdir](#readdir)
- * * [stat](#stat)
- * * [readFile](#readFile)
- * * [writeFile](#writeFile)
- * * [unlink](#unlink)
- * * [mkdir](#mkdir)
- * * [rmdir](#rmdir) ... and so on.
  *
  * @constructor
  */
@@ -566,15 +543,15 @@ Gdfs.prototype.cwd = function() {
 };
 
 /**
- * Change or move the current working directory to the path.
- * @param {string} pathname A pathname to operate.
+ * Changes the current working directory of this client session.
+ * @param {string} directory A pathname to operate.
  * @async
  * @returns {Promise&lt;boolean>} the status of the operation.
  */
-Gdfs.prototype.chdir = async function(pathname) {
+Gdfs.prototype.chdir = async function(directory) {
     debug("No tests pass: Gdfs#chdir");
     const cwd = this.getCurrentPath();
-    const next_cwd = GdfsPath.merge(cwd, new GdfsPath(pathname));
+    const next_cwd = GdfsPath.merge(cwd, new GdfsPath(directory));
     return await this.setCurrentPath(next_cwd);
 };
 
@@ -678,13 +655,15 @@ Gdfs.prototype.toAbsolutePath = function(path) {
  *     const opts = { pageSize: 10, pageToken: null };
  *     const files = [];
  *     do {
- *        for(const fn of await files.readdir(opts)) {
+ *        for(const fn of await files.readdir(path, opts)) {
  *            files.push(fn);
  *        }
  *     } while(opts.pageToken != null);
  * };
  * ```
  *
+ * @async
+ * @since v1.1.0
  * @param {string} path A path to the directory.
  *
  * @param {object|null} options (Optional) options for this method.
@@ -756,11 +735,15 @@ Gdfs.prototype.readdir = async function(path, options) {
 };
 
 /**
- * Get file resource.
+ * Get file's properties.
+ * It is a file resource of Google Drive including id, name, mimeType,
+ * webContentLink and webViewLink about the file or directory.
+ *
  * @async
- * @param {string} path A pathname to get.
+ * @param {string} path A pathname.
  * @returns {File} The file resource of Google Drive including id, name,
  *      mimeType, webContentLink and webViewLink about the file or directory.
+ * @since v1.1.0
  */
 Gdfs.prototype.stat = async function(path) {
     debug(`Gdfs#stat(${path})`);
@@ -796,17 +779,20 @@ Gdfs.prototype.stat = async function(path) {
 
 /**
  * Read a file.
+ * The file must have webContentLink in its resource to read the contents,
+ * To get the resource, Use [`Gdfs#stat`](#stat).
+ *
  * @async
- * @param {string} pathname A pathname to operate.
+ * @param {string} path A pathname to operate.
  * @returns {Promise&lt;string>} The file content.
  */
-Gdfs.prototype.readFile = async function(pathname) {
-    debug(`Gdfs#readFile(${pathname})`);
-    const absPath = this.toAbsolutePath(new GdfsPath(pathname));
+Gdfs.prototype.readFile = async function(path) {
+    debug(`Gdfs#readFile(${path})`);
+    const absPath = this.toAbsolutePath(new GdfsPath(path));
     const parentFolder = await this.getFileOfPath(absPath.getPathPart());
     debug(`readFile: parentFolder: ${JSON.stringify(parentFolder)}`);
     if(!parentFolder || parentFolder.id == null) {
-        debug(`readFile: The path not exists ${pathname}`);
+        debug(`readFile: The path not exists ${path}`);
         return null;
     }
     const filename = absPath.getFilename();
@@ -814,12 +800,12 @@ Gdfs.prototype.readFile = async function(pathname) {
     const files = await Gdfs.findFileByName(parentFolder.id, filename);
     debug(`readFile: files: ${JSON.stringify(files)}`);
     if(files.length === 0) {
-        debug(`File not found ${pathname}`);
+        debug(`File not found ${path}`);
         return null;
     }
     const file = files.shift();
     if(!file.webContentLink) {
-        debug(`File is not downloadable ${pathname}`);
+        debug(`File is not downloadable ${path}`);
         return null;
     }
     return await Gdfs.downloadFile(file.id);
@@ -828,18 +814,18 @@ Gdfs.prototype.readFile = async function(pathname) {
 /**
  * Make a directory.
  * @async
- * @param {string} pathname A pathname to operate.
+ * @param {string} path A pathname to operate.
  * @returns {Promise&lt;object>} The API response.
  */
-Gdfs.prototype.mkdir = async function(pathname) {
-    debug(`mkdir(${pathname})`);
+Gdfs.prototype.mkdir = async function(path) {
+    debug(`mkdir(${path})`);
 
-    pathname = pathname.replace(/\/+$/, "");
-    const absPath = this.toAbsolutePath(new GdfsPath(pathname));
+    path = path.replace(/\/+$/, "");
+    const absPath = this.toAbsolutePath(new GdfsPath(path));
     const parentFolder = await this.getFileOfPath(absPath.getPathPart());
     debug(`mkdir: parentFolder ${JSON.stringify(parentFolder)}`);
     if(!parentFolder || parentFolder.id == null) {
-        debug(`mkdir: The path not exists ${pathname}`);
+        debug(`mkdir: The path not exists ${path}`);
         return null;
     }
     const dirname = absPath.getFilename();
@@ -847,7 +833,7 @@ Gdfs.prototype.mkdir = async function(pathname) {
     const files = await Gdfs.findFileByName(parentFolder.id, dirname);
     debug(`mkdir: files: ${JSON.stringify(files)}`);
     if(files.length > 0) {
-        debug(`mkdir: The directory exists ${pathname}`);
+        debug(`mkdir: The directory exists ${path}`);
         return null;
     }
     const result = await Gdfs.createFile(
@@ -862,43 +848,43 @@ Gdfs.prototype.mkdir = async function(pathname) {
  * Remove the directory but not a normal file.
  * The operation will fail, if it is not a directory nor empty.
  * @async
- * @param {string} pathname A pathname to operate.
+ * @param {string} path A pathname to operate.
  * @returns {Promise&lt;object|null>} Returns the API response.
  *      null means it was failed.
  */
-Gdfs.prototype.rmdir = async function(pathname) {
-    debug(`rmdir(${pathname})`);
-    pathname = pathname.replace(/\/+$/, "");
-    const absPath = this.toAbsolutePath(new GdfsPath(pathname));
+Gdfs.prototype.rmdir = async function(path) {
+    debug(`rmdir(${path})`);
+    path = path.replace(/\/+$/, "");
+    const absPath = this.toAbsolutePath(new GdfsPath(path));
     const parentFolder = await this.getFileOfPath(absPath.getPathPart());
     debug(`rmdir: parentFolder ${JSON.stringify(parentFolder)}`);
     if(!parentFolder || parentFolder.id == null) {
-        debug(`rmdir: The path not exists ${pathname}`);
+        debug(`rmdir: The path not exists ${path}`);
         return null;
     }
     const dirname = absPath.getFilename();
     debug(`rmdir: dirname: ${dirname}`);
     if(dirname === "") {
-        debug(`rmdir: The root directory cannot be removed ${pathname}`);
+        debug(`rmdir: The root directory cannot be removed ${path}`);
         return null;
     }
     const dires = await Gdfs.findFolderByName(parentFolder.id, dirname);
     debug(`rmdir: dires: ${JSON.stringify(dires)}`);
     if(dires.length === 0) {
-        debug(`rmdir: The directory not exists ${pathname}`);
+        debug(`rmdir: The directory not exists ${path}`);
         return null;
     }
     const dir = dires.shift();
     debug(`rmdir: dir ${JSON.stringify(dir)}`);
     debug(`rmdir: _currentPath ${JSON.stringify(this._currentPath, null, "  ")}`);
-    if(this._currentPath.filter(path => path.id == dir.id).length > 0 ||
+    if(this._currentPath.filter(parent => parent.id == dir.id).length > 0 ||
         dir.id === await Gdfs.getActualRootFolderId())
     {
-        debug(`rmdir: The pathname is a parent ${pathname}`);
+        debug(`rmdir: The path is a parent ${path}`);
         return null;
     }
     if(dir.mimeType !== Gdfs.mimeTypeFolder) {
-        debug(`rmdir: The pathname is not folder ${pathname}`);
+        debug(`rmdir: The path is not folder ${path}`);
         return null;
     }
     const params = {
@@ -909,7 +895,7 @@ Gdfs.prototype.rmdir = async function(pathname) {
     const children = await Gdfs.getFileList(params);
     debug(`rmdir: children: ${JSON.stringify(children, null, "  ")}`);
     if(children.files.length > 0) {
-        debug(`rmdir: The folder is not empty ${pathname}`);
+        debug(`rmdir: The folder is not empty ${path}`);
         return null;
     }
     const response = await gapi.client.drive.files.delete(
@@ -922,18 +908,20 @@ Gdfs.prototype.rmdir = async function(pathname) {
 
 /**
  * Delete the file but not directory.
+ * This does not move the file to the trash-box.
+ *
  * @async
- * @param {string} pathname A pathname to operate.
+ * @param {string} path A pathname to operate.
  * @returns {Promise&lt;object|null>} Returns the API response.
  *      null means it was failed.
  */
-Gdfs.prototype.unlink = async function(pathname) {
-    debug(`unlink(${pathname})`);
-    const absPath = this.toAbsolutePath(new GdfsPath(pathname));
+Gdfs.prototype.unlink = async function(path) {
+    debug(`unlink(${path})`);
+    const absPath = this.toAbsolutePath(new GdfsPath(path));
     const parentFolder = await this.getFileOfPath(absPath.getPathPart());
     debug(`unlink: parentFolder ${JSON.stringify(parentFolder)}`);
     if(!parentFolder || parentFolder.id == null) {
-        debug(`unlink: The path not exists ${pathname}`);
+        debug(`unlink: The path not exists ${path}`);
         return null;
     }
     const dirname = absPath.getFilename();
@@ -941,12 +929,12 @@ Gdfs.prototype.unlink = async function(pathname) {
     const files = await Gdfs.findFileByName(parentFolder.id, dirname);
     debug(`unlink: files: ${JSON.stringify(files)}`);
     if(files.length === 0) {
-        debug(`unlink: The file not exists ${pathname}`);
+        debug(`unlink: The file not exists ${path}`);
         return null;
     }
     const file = files.shift();
     if(file.mimeType === Gdfs.mimeTypeFolder) {
-        debug(`unlink: The file is a folder ${pathname}`);
+        debug(`unlink: The file is a folder ${path}`);
         return null;
     }
     const response = await gapi.client.drive.files.delete({ fileId: file.id });
@@ -960,18 +948,18 @@ Gdfs.prototype.unlink = async function(pathname) {
 /**
  * Write a file.
  * @async
- * @param {string} pathname A pathname to operate.
+ * @param {string} path A pathname to operate.
  * @param {string} mimeType A mimeType of the file content.
  * @param {string} data A file content.
  * @returns {Promise&lt;object>} The API response.
  */
-Gdfs.prototype.writeFile = async function(pathname, mimeType, data) {
-    debug(`Gdfs#writeFile(${pathname},${mimeType}, ${JSON.stringify(data)})`);
-    const absPath = this.toAbsolutePath(new GdfsPath(pathname));
+Gdfs.prototype.writeFile = async function(path, mimeType, data) {
+    debug(`Gdfs#writeFile(${path},${mimeType}, ${JSON.stringify(data)})`);
+    const absPath = this.toAbsolutePath(new GdfsPath(path));
     const parentFolder = await this.getFileOfPath(absPath.getPathPart());
     debug(`writeFile: parentFolder: ${JSON.stringify(parentFolder)}`);
     if(!parentFolder || parentFolder.id == null) {
-        debug(`writeFile: The path not exists ${pathname}`);
+        debug(`writeFile: The path not exists ${path}`);
         return null;
     }
     const filename = absPath.getFilename();
@@ -989,7 +977,7 @@ Gdfs.prototype.writeFile = async function(pathname, mimeType, data) {
     }
     const file = files.shift();
     if(file.mimeType === Gdfs.mimeTypeFolder) {
-        debug(`writeFile: The path already exists as directory ${pathname}`);
+        debug(`writeFile: The path already exists as directory ${path}`);
         return null;
     }
     const result = await Gdfs.updateFile(file.id, mimeType, data);
@@ -1009,13 +997,17 @@ module.exports = Gdfs;
 
 </div>
 
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Gdfs.html">Gdfs</a></li><li><a href="GdfsEvent.html">GdfsEvent</a></li><li><a href="GdfsPath.html">GdfsPath</a></li><li><a href="GdfsUi.html">GdfsUi</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createUrl">createUrl</a></li><li><a href="global.html#getAccessToken">getAccessToken</a></li><li><a href="global.html#requestWithAuth">requestWithAuth</a></li></ul>
+</nav>
+
 <br class="clear">
 
 <footer>
-    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Oct 07 2018 17:49:19 GMT+0900 (東京 (標準時)) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 08 2018 13:17:17 GMT+0900 (東京 (標準時))
 </footer>
 
-<script>prettyPrint();</script>
-<script src="scripts/linenumber.js"></script>
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
 </body>
 </html>
