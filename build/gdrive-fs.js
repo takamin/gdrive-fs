@@ -1169,16 +1169,6 @@ const GdfsPath = require("./gdfs-path.js");
  * by [chdir](#chdir) method. When it is changed, the 'oncwdupdate' callback
  * is fired. To know where the CWD is, The [cwd](#cwd) method is available.
  *
- * For details of file operations, see the document of each methods:
- *
- * * [readdir](#readdir)
- * * [stat](#stat)
- * * [readFile](#readFile)
- * * [writeFile](#writeFile)
- * * [unlink](#unlink)
- * * [mkdir](#mkdir)
- * * [rmdir](#rmdir) ... and so on.
- *
  * @constructor
  */
 
@@ -1720,17 +1710,17 @@ Gdfs.prototype.cwd = function () {
   return this.getCurrentPath().toString();
 };
 /**
- * Change or move the current working directory to the path.
- * @param {string} pathname A pathname to operate.
+ * Changes the current working directory of this client session.
+ * @param {string} directory A pathname to operate.
  * @async
  * @returns {Promise<boolean>} the status of the operation.
  */
 
 
-Gdfs.prototype.chdir = async function (pathname) {
+Gdfs.prototype.chdir = async function (directory) {
   debug("No tests pass: Gdfs#chdir");
   const cwd = this.getCurrentPath();
-  const next_cwd = GdfsPath.merge(cwd, new GdfsPath(pathname));
+  const next_cwd = GdfsPath.merge(cwd, new GdfsPath(directory));
   return await this.setCurrentPath(next_cwd);
 };
 /**
@@ -1865,13 +1855,15 @@ Gdfs.prototype.toAbsolutePath = function (path) {
  *     const opts = { pageSize: 10, pageToken: null };
  *     const files = [];
  *     do {
- *        for(const fn of await files.readdir(opts)) {
+ *        for(const fn of await files.readdir(path, opts)) {
  *            files.push(fn);
  *        }
  *     } while(opts.pageToken != null);
  * };
  * ```
  *
+ * @async
+ * @since v1.1.0
  * @param {string} path A path to the directory.
  *
  * @param {object|null} options (Optional) options for this method.
@@ -1946,11 +1938,15 @@ Gdfs.prototype.readdir = async function (path, options) {
   return files;
 };
 /**
- * Get file resource.
+ * Get file's properties.
+ * It is a file resource of Google Drive including id, name, mimeType,
+ * webContentLink and webViewLink about the file or directory.
+ *
  * @async
- * @param {string} path A pathname to get.
+ * @param {string} path A pathname.
  * @returns {File} The file resource of Google Drive including id, name,
  *      mimeType, webContentLink and webViewLink about the file or directory.
+ * @since v1.1.0
  */
 
 
@@ -1993,20 +1989,23 @@ Gdfs.prototype.stat = async function (path) {
 };
 /**
  * Read a file.
+ * The file must have webContentLink in its resource to read the contents,
+ * To get the resource, Use [`Gdfs#stat`](#stat).
+ *
  * @async
- * @param {string} pathname A pathname to operate.
+ * @param {string} path A pathname to operate.
  * @returns {Promise<string>} The file content.
  */
 
 
-Gdfs.prototype.readFile = async function (pathname) {
-  debug(`Gdfs#readFile(${pathname})`);
-  const absPath = this.toAbsolutePath(new GdfsPath(pathname));
+Gdfs.prototype.readFile = async function (path) {
+  debug(`Gdfs#readFile(${path})`);
+  const absPath = this.toAbsolutePath(new GdfsPath(path));
   const parentFolder = await this.getFileOfPath(absPath.getPathPart());
   debug(`readFile: parentFolder: ${JSON.stringify(parentFolder)}`);
 
   if (!parentFolder || parentFolder.id == null) {
-    debug(`readFile: The path not exists ${pathname}`);
+    debug(`readFile: The path not exists ${path}`);
     return null;
   }
 
@@ -2016,14 +2015,14 @@ Gdfs.prototype.readFile = async function (pathname) {
   debug(`readFile: files: ${JSON.stringify(files)}`);
 
   if (files.length === 0) {
-    debug(`File not found ${pathname}`);
+    debug(`File not found ${path}`);
     return null;
   }
 
   const file = files.shift();
 
   if (!file.webContentLink) {
-    debug(`File is not downloadable ${pathname}`);
+    debug(`File is not downloadable ${path}`);
     return null;
   }
 
@@ -2032,20 +2031,20 @@ Gdfs.prototype.readFile = async function (pathname) {
 /**
  * Make a directory.
  * @async
- * @param {string} pathname A pathname to operate.
+ * @param {string} path A pathname to operate.
  * @returns {Promise<object>} The API response.
  */
 
 
-Gdfs.prototype.mkdir = async function (pathname) {
-  debug(`mkdir(${pathname})`);
-  pathname = pathname.replace(/\/+$/, "");
-  const absPath = this.toAbsolutePath(new GdfsPath(pathname));
+Gdfs.prototype.mkdir = async function (path) {
+  debug(`mkdir(${path})`);
+  path = path.replace(/\/+$/, "");
+  const absPath = this.toAbsolutePath(new GdfsPath(path));
   const parentFolder = await this.getFileOfPath(absPath.getPathPart());
   debug(`mkdir: parentFolder ${JSON.stringify(parentFolder)}`);
 
   if (!parentFolder || parentFolder.id == null) {
-    debug(`mkdir: The path not exists ${pathname}`);
+    debug(`mkdir: The path not exists ${path}`);
     return null;
   }
 
@@ -2055,7 +2054,7 @@ Gdfs.prototype.mkdir = async function (pathname) {
   debug(`mkdir: files: ${JSON.stringify(files)}`);
 
   if (files.length > 0) {
-    debug(`mkdir: The directory exists ${pathname}`);
+    debug(`mkdir: The directory exists ${path}`);
     return null;
   }
 
@@ -2071,21 +2070,21 @@ Gdfs.prototype.mkdir = async function (pathname) {
  * Remove the directory but not a normal file.
  * The operation will fail, if it is not a directory nor empty.
  * @async
- * @param {string} pathname A pathname to operate.
+ * @param {string} path A pathname to operate.
  * @returns {Promise<object|null>} Returns the API response.
  *      null means it was failed.
  */
 
 
-Gdfs.prototype.rmdir = async function (pathname) {
-  debug(`rmdir(${pathname})`);
-  pathname = pathname.replace(/\/+$/, "");
-  const absPath = this.toAbsolutePath(new GdfsPath(pathname));
+Gdfs.prototype.rmdir = async function (path) {
+  debug(`rmdir(${path})`);
+  path = path.replace(/\/+$/, "");
+  const absPath = this.toAbsolutePath(new GdfsPath(path));
   const parentFolder = await this.getFileOfPath(absPath.getPathPart());
   debug(`rmdir: parentFolder ${JSON.stringify(parentFolder)}`);
 
   if (!parentFolder || parentFolder.id == null) {
-    debug(`rmdir: The path not exists ${pathname}`);
+    debug(`rmdir: The path not exists ${path}`);
     return null;
   }
 
@@ -2093,7 +2092,7 @@ Gdfs.prototype.rmdir = async function (pathname) {
   debug(`rmdir: dirname: ${dirname}`);
 
   if (dirname === "") {
-    debug(`rmdir: The root directory cannot be removed ${pathname}`);
+    debug(`rmdir: The root directory cannot be removed ${path}`);
     return null;
   }
 
@@ -2101,7 +2100,7 @@ Gdfs.prototype.rmdir = async function (pathname) {
   debug(`rmdir: dires: ${JSON.stringify(dires)}`);
 
   if (dires.length === 0) {
-    debug(`rmdir: The directory not exists ${pathname}`);
+    debug(`rmdir: The directory not exists ${path}`);
     return null;
   }
 
@@ -2109,13 +2108,13 @@ Gdfs.prototype.rmdir = async function (pathname) {
   debug(`rmdir: dir ${JSON.stringify(dir)}`);
   debug(`rmdir: _currentPath ${JSON.stringify(this._currentPath, null, "  ")}`);
 
-  if (this._currentPath.filter(path => path.id == dir.id).length > 0 || dir.id === (await Gdfs.getActualRootFolderId())) {
-    debug(`rmdir: The pathname is a parent ${pathname}`);
+  if (this._currentPath.filter(parent => parent.id == dir.id).length > 0 || dir.id === (await Gdfs.getActualRootFolderId())) {
+    debug(`rmdir: The path is a parent ${path}`);
     return null;
   }
 
   if (dir.mimeType !== Gdfs.mimeTypeFolder) {
-    debug(`rmdir: The pathname is not folder ${pathname}`);
+    debug(`rmdir: The path is not folder ${path}`);
     return null;
   }
 
@@ -2128,7 +2127,7 @@ Gdfs.prototype.rmdir = async function (pathname) {
   debug(`rmdir: children: ${JSON.stringify(children, null, "  ")}`);
 
   if (children.files.length > 0) {
-    debug(`rmdir: The folder is not empty ${pathname}`);
+    debug(`rmdir: The folder is not empty ${path}`);
     return null;
   }
 
@@ -2144,21 +2143,23 @@ Gdfs.prototype.rmdir = async function (pathname) {
 };
 /**
  * Delete the file but not directory.
+ * This does not move the file to the trash-box.
+ *
  * @async
- * @param {string} pathname A pathname to operate.
+ * @param {string} path A pathname to operate.
  * @returns {Promise<object|null>} Returns the API response.
  *      null means it was failed.
  */
 
 
-Gdfs.prototype.unlink = async function (pathname) {
-  debug(`unlink(${pathname})`);
-  const absPath = this.toAbsolutePath(new GdfsPath(pathname));
+Gdfs.prototype.unlink = async function (path) {
+  debug(`unlink(${path})`);
+  const absPath = this.toAbsolutePath(new GdfsPath(path));
   const parentFolder = await this.getFileOfPath(absPath.getPathPart());
   debug(`unlink: parentFolder ${JSON.stringify(parentFolder)}`);
 
   if (!parentFolder || parentFolder.id == null) {
-    debug(`unlink: The path not exists ${pathname}`);
+    debug(`unlink: The path not exists ${path}`);
     return null;
   }
 
@@ -2168,14 +2169,14 @@ Gdfs.prototype.unlink = async function (pathname) {
   debug(`unlink: files: ${JSON.stringify(files)}`);
 
   if (files.length === 0) {
-    debug(`unlink: The file not exists ${pathname}`);
+    debug(`unlink: The file not exists ${path}`);
     return null;
   }
 
   const file = files.shift();
 
   if (file.mimeType === Gdfs.mimeTypeFolder) {
-    debug(`unlink: The file is a folder ${pathname}`);
+    debug(`unlink: The file is a folder ${path}`);
     return null;
   }
 
@@ -2193,21 +2194,21 @@ Gdfs.prototype.unlink = async function (pathname) {
 /**
  * Write a file.
  * @async
- * @param {string} pathname A pathname to operate.
+ * @param {string} path A pathname to operate.
  * @param {string} mimeType A mimeType of the file content.
  * @param {string} data A file content.
  * @returns {Promise<object>} The API response.
  */
 
 
-Gdfs.prototype.writeFile = async function (pathname, mimeType, data) {
-  debug(`Gdfs#writeFile(${pathname},${mimeType}, ${JSON.stringify(data)})`);
-  const absPath = this.toAbsolutePath(new GdfsPath(pathname));
+Gdfs.prototype.writeFile = async function (path, mimeType, data) {
+  debug(`Gdfs#writeFile(${path},${mimeType}, ${JSON.stringify(data)})`);
+  const absPath = this.toAbsolutePath(new GdfsPath(path));
   const parentFolder = await this.getFileOfPath(absPath.getPathPart());
   debug(`writeFile: parentFolder: ${JSON.stringify(parentFolder)}`);
 
   if (!parentFolder || parentFolder.id == null) {
-    debug(`writeFile: The path not exists ${pathname}`);
+    debug(`writeFile: The path not exists ${path}`);
     return null;
   }
 
@@ -2230,7 +2231,7 @@ Gdfs.prototype.writeFile = async function (pathname, mimeType, data) {
   const file = files.shift();
 
   if (file.mimeType === Gdfs.mimeTypeFolder) {
-    debug(`writeFile: The path already exists as directory ${pathname}`);
+    debug(`writeFile: The path already exists as directory ${path}`);
     return null;
   }
 

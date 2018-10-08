@@ -4,7 +4,7 @@
         "dictionaries": ["jsdoc"]
     },
     "source": {
-        "include": ["lib"],
+        "include": ["lib", "README.md"],
         "includePattern": ".js$",
         "excludePattern": "(node_modules|test|public|docs|dist|.cache)"
     },
@@ -21,7 +21,6 @@
         "destination": "./jsdoc/",
         "encoding": "utf8",
         "private": true,
-        "recurse": true,
-        "template": "./node_modules/minami"
+        "recurse": true
     }
 }
