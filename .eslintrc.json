@@ -15,10 +15,7 @@
         ],
         "linebreak-style": "off",
         "no-console": "off",
-        "quotes": [
-            "error",
-            "double"
-        ],
+        "quotes": "off",
         "semi": [
             "error",
             "always"

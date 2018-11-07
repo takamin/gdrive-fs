@@ -10,7 +10,8 @@
     "opn": "node -e require('opn')('http://localhost:1234/')",
     "parcel": "parcel",
     "start": "eslint . && mocha && parcel -- public/index.html",
-    "test": "eslint . && mocha"
+    "test": "eslint . && mocha",
+    "web-test": "eslint . && parcel test/web-test.html --open"
   },
   "repository": {
     "type": "git",
