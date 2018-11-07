@@ -56,7 +56,6 @@ function FileList(element) {
     }
 
     DOM.append(this._element,
-        "<img src='https://drive-thirdparty.googleusercontent.com/16/type/application/vnd.google-apps.folder'/> ",
         "<span class='pankuzu'></span>",
         " Page: ", this._btnPagePrev, this._btnPageNext, this._btnCdParent,
         this._filelist,
@@ -139,7 +138,8 @@ FileList.prototype.updateButtons = function() {
 
     debug("FileList#updateButtons end");
 };
-
+const iconUrlPath = "https://drive-thirdparty.googleusercontent.com/16/type/application/";
+const iconFolderUrl = `${iconUrlPath}vnd.google-apps.folder`;
 FileList.prototype.updatePankuzu = function() {
     debug("Start of updatePankuzu");
     const pankuzu = this._element.querySelector(".pankuzu");
@@ -147,7 +147,7 @@ FileList.prototype.updatePankuzu = function() {
         const path = this._gdfsUi.getCurrentPath();
         const pankuzuItems = path.map(file => DOM.createElement("A",
             { href:"javascript:void(0);" },
-            (file.id === "root" ? "/" : file.name),
+            `<img src='${iconFolderUrl}'/>${(file.id === "root" ? "ROOT" : file.name)}`,
             { "click": () => this._gdfsUi.chdirById(file.id) })
         );
         insertBetweenEachItem(pankuzuItems, () => DOM.text(" / "));

@@ -1,5 +1,30 @@
+.gdrive-fs-ui {
+    display: inline-block;
+    font-size: 10pt;
+    min-width: 600px;
+    border: outset 2px silver;
+    background-color: #eeeedd;
+    margin: 5px 0;
+    padding: 5px;
+}
+.pankuzu {
+    display: inline-block;
+    height: 24px;
+    line-height: 24px;
+    min-width: 400px;
+    border: inset 2px silver;
+    margin: 5px;
+    padding: 0 5px;
+}
+.pankuzu img {
+    vertical-align: middle;
+}
 .filelist {
     list-style-type: none;
+    list-style-position: inside;
+    border: inset 2px silver;
+    margin: 5px;
+    padding: 5px;
 }
 .filelist .item {
     cursor: pointer;
