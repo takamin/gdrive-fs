@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test gdrive-fs</title>
+    <link href="https://unpkg.com/mocha@5.2.0/mocha.css" rel="stylesheet" />
+</head>
+<body>
+    <h1>Test gdrive-fs</h1>
+    <h2>Test control</h2>
+    <div id="test-control"></div>
+
+    <!-- Mocha writes the results -->
+    <h2>Test result</h2>
+    <div id="mocha"></div>
+    <script src="https://unpkg.com/mocha@5.2.0/mocha.js"></script>
+    <script type="text/javascript">
+        mocha.setup('bdd');
+        mocha.setup('tdd');
+    </script>
+    <script type="text/javascript" src="./gdfs-path.js"></script>
+    <script type="text/javascript" src="./web-test.js"></script>
+    <script type="text/javascript">
+        localStorage.debug = "web-test,gdfs,gdfs-ui";
+        mocha.run();
+    </script>
+</body>
+</html>
+
