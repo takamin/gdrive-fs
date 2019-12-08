@@ -148,7 +148,7 @@ module.exports = function(val, options) {
   var type = typeof val;
   if (type === 'string' && val.length > 0) {
     return parse(val);
-  } else if (type === 'number' && isNaN(val) === false) {
+  } else if (type === 'number' && isFinite(val)) {
     return options.long ? fmtLong(val) : fmtShort(val);
   }
   throw new Error(
@@ -170,7 +170,7 @@ function parse(str) {
   if (str.length > 100) {
     return;
   }
-  var match = /^((?:\d+)?\-?\d?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)?$/i.exec(
+  var match = /^(-?(?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)?$/i.exec(
     str
   );
   if (!match) {
@@ -282,257 +282,274 @@ function plural(ms, msAbs, n, name) {
 }
 
 },{}],"MTTc":[function(require,module,exports) {
-"use strict";
 
 /**
  * This is the common logic for both the Node.js and web browser
  * implementations of `debug()`.
  */
+
 function setup(env) {
-  createDebug.debug = createDebug;
-  createDebug.default = createDebug;
-  createDebug.coerce = coerce;
-  createDebug.disable = disable;
-  createDebug.enable = enable;
-  createDebug.enabled = enabled;
-  createDebug.humanize = require('ms');
-  Object.keys(env).forEach(function (key) {
-    createDebug[key] = env[key];
-  });
-  /**
-  * Active `debug` instances.
-  */
+	createDebug.debug = createDebug;
+	createDebug.default = createDebug;
+	createDebug.coerce = coerce;
+	createDebug.disable = disable;
+	createDebug.enable = enable;
+	createDebug.enabled = enabled;
+	createDebug.humanize = require('ms');
 
-  createDebug.instances = [];
-  /**
-  * The currently active debug mode names, and names to skip.
-  */
+	Object.keys(env).forEach(key => {
+		createDebug[key] = env[key];
+	});
 
-  createDebug.names = [];
-  createDebug.skips = [];
-  /**
-  * Map of special "%n" handling functions, for the debug "format" argument.
-  *
-  * Valid key names are a single, lower or upper-case letter, i.e. "n" and "N".
-  */
+	/**
+	* Active `debug` instances.
+	*/
+	createDebug.instances = [];
 
-  createDebug.formatters = {};
-  /**
-  * Selects a color for a debug namespace
-  * @param {String} namespace The namespace string for the for the debug instance to be colored
-  * @return {Number|String} An ANSI color code for the given namespace
-  * @api private
-  */
+	/**
+	* The currently active debug mode names, and names to skip.
+	*/
 
-  function selectColor(namespace) {
-    var hash = 0;
+	createDebug.names = [];
+	createDebug.skips = [];
 
-    for (var i = 0; i < namespace.length; i++) {
-      hash = (hash << 5) - hash + namespace.charCodeAt(i);
-      hash |= 0; // Convert to 32bit integer
-    }
+	/**
+	* Map of special "%n" handling functions, for the debug "format" argument.
+	*
+	* Valid key names are a single, lower or upper-case letter, i.e. "n" and "N".
+	*/
+	createDebug.formatters = {};
 
-    return createDebug.colors[Math.abs(hash) % createDebug.colors.length];
-  }
+	/**
+	* Selects a color for a debug namespace
+	* @param {String} namespace The namespace string for the for the debug instance to be colored
+	* @return {Number|String} An ANSI color code for the given namespace
+	* @api private
+	*/
+	function selectColor(namespace) {
+		let hash = 0;
 
-  createDebug.selectColor = selectColor;
-  /**
-  * Create a debugger with the given `namespace`.
-  *
-  * @param {String} namespace
-  * @return {Function}
-  * @api public
-  */
+		for (let i = 0; i < namespace.length; i++) {
+			hash = ((hash << 5) - hash) + namespace.charCodeAt(i);
+			hash |= 0; // Convert to 32bit integer
+		}
 
-  function createDebug(namespace) {
-    var prevTime;
+		return createDebug.colors[Math.abs(hash) % createDebug.colors.length];
+	}
+	createDebug.selectColor = selectColor;
 
-    function debug() {
-      // Disabled?
-      if (!debug.enabled) {
-        return;
-      }
+	/**
+	* Create a debugger with the given `namespace`.
+	*
+	* @param {String} namespace
+	* @return {Function}
+	* @api public
+	*/
+	function createDebug(namespace) {
+		let prevTime;
 
-      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
+		function debug(...args) {
+			// Disabled?
+			if (!debug.enabled) {
+				return;
+			}
 
-      var self = debug; // Set `diff` timestamp
+			const self = debug;
 
-      var curr = Number(new Date());
-      var ms = curr - (prevTime || curr);
-      self.diff = ms;
-      self.prev = prevTime;
-      self.curr = curr;
-      prevTime = curr;
-      args[0] = createDebug.coerce(args[0]);
+			// Set `diff` timestamp
+			const curr = Number(new Date());
+			const ms = curr - (prevTime || curr);
+			self.diff = ms;
+			self.prev = prevTime;
+			self.curr = curr;
+			prevTime = curr;
 
-      if (typeof args[0] !== 'string') {
-        // Anything else let's inspect with %O
-        args.unshift('%O');
-      } // Apply any `formatters` transformations
+			args[0] = createDebug.coerce(args[0]);
 
+			if (typeof args[0] !== 'string') {
+				// Anything else let's inspect with %O
+				args.unshift('%O');
+			}
 
-      var index = 0;
-      args[0] = args[0].replace(/%([a-zA-Z%])/g, function (match, format) {
-        // If we encounter an escaped % then don't increase the array index
-        if (match === '%%') {
-          return match;
-        }
+			// Apply any `formatters` transformations
+			let index = 0;
+			args[0] = args[0].replace(/%([a-zA-Z%])/g, (match, format) => {
+				// If we encounter an escaped % then don't increase the array index
+				if (match === '%%') {
+					return match;
+				}
+				index++;
+				const formatter = createDebug.formatters[format];
+				if (typeof formatter === 'function') {
+					const val = args[index];
+					match = formatter.call(self, val);
 
-        index++;
-        var formatter = createDebug.formatters[format];
+					// Now we need to remove `args[index]` since it's inlined in the `format`
+					args.splice(index, 1);
+					index--;
+				}
+				return match;
+			});
 
-        if (typeof formatter === 'function') {
-          var val = args[index];
-          match = formatter.call(self, val); // Now we need to remove `args[index]` since it's inlined in the `format`
+			// Apply env-specific formatting (colors, etc.)
+			createDebug.formatArgs.call(self, args);
 
-          args.splice(index, 1);
-          index--;
-        }
+			const logFn = self.log || createDebug.log;
+			logFn.apply(self, args);
+		}
 
-        return match;
-      }); // Apply env-specific formatting (colors, etc.)
+		debug.namespace = namespace;
+		debug.enabled = createDebug.enabled(namespace);
+		debug.useColors = createDebug.useColors();
+		debug.color = selectColor(namespace);
+		debug.destroy = destroy;
+		debug.extend = extend;
+		// Debug.formatArgs = formatArgs;
+		// debug.rawLog = rawLog;
 
-      createDebug.formatArgs.call(self, args);
-      var logFn = self.log || createDebug.log;
-      logFn.apply(self, args);
-    }
+		// env-specific initialization logic for debug instances
+		if (typeof createDebug.init === 'function') {
+			createDebug.init(debug);
+		}
 
-    debug.namespace = namespace;
-    debug.enabled = createDebug.enabled(namespace);
-    debug.useColors = createDebug.useColors();
-    debug.color = selectColor(namespace);
-    debug.destroy = destroy;
-    debug.extend = extend; // Debug.formatArgs = formatArgs;
-    // debug.rawLog = rawLog;
-    // env-specific initialization logic for debug instances
+		createDebug.instances.push(debug);
 
-    if (typeof createDebug.init === 'function') {
-      createDebug.init(debug);
-    }
+		return debug;
+	}
 
-    createDebug.instances.push(debug);
-    return debug;
-  }
+	function destroy() {
+		const index = createDebug.instances.indexOf(this);
+		if (index !== -1) {
+			createDebug.instances.splice(index, 1);
+			return true;
+		}
+		return false;
+	}
 
-  function destroy() {
-    var index = createDebug.instances.indexOf(this);
+	function extend(namespace, delimiter) {
+		const newDebug = createDebug(this.namespace + (typeof delimiter === 'undefined' ? ':' : delimiter) + namespace);
+		newDebug.log = this.log;
+		return newDebug;
+	}
 
-    if (index !== -1) {
-      createDebug.instances.splice(index, 1);
-      return true;
-    }
+	/**
+	* Enables a debug mode by namespaces. This can include modes
+	* separated by a colon and wildcards.
+	*
+	* @param {String} namespaces
+	* @api public
+	*/
+	function enable(namespaces) {
+		createDebug.save(namespaces);
 
-    return false;
-  }
+		createDebug.names = [];
+		createDebug.skips = [];
 
-  function extend(namespace, delimiter) {
-    return createDebug(this.namespace + (typeof delimiter === 'undefined' ? ':' : delimiter) + namespace);
-  }
-  /**
-  * Enables a debug mode by namespaces. This can include modes
-  * separated by a colon and wildcards.
-  *
-  * @param {String} namespaces
-  * @api public
-  */
+		let i;
+		const split = (typeof namespaces === 'string' ? namespaces : '').split(/[\s,]+/);
+		const len = split.length;
 
+		for (i = 0; i < len; i++) {
+			if (!split[i]) {
+				// ignore empty strings
+				continue;
+			}
 
-  function enable(namespaces) {
-    createDebug.save(namespaces);
-    createDebug.names = [];
-    createDebug.skips = [];
-    var i;
-    var split = (typeof namespaces === 'string' ? namespaces : '').split(/[\s,]+/);
-    var len = split.length;
+			namespaces = split[i].replace(/\*/g, '.*?');
 
-    for (i = 0; i < len; i++) {
-      if (!split[i]) {
-        // ignore empty strings
-        continue;
-      }
+			if (namespaces[0] === '-') {
+				createDebug.skips.push(new RegExp('^' + namespaces.substr(1) + '$'));
+			} else {
+				createDebug.names.push(new RegExp('^' + namespaces + '$'));
+			}
+		}
 
-      namespaces = split[i].replace(/\*/g, '.*?');
+		for (i = 0; i < createDebug.instances.length; i++) {
+			const instance = createDebug.instances[i];
+			instance.enabled = createDebug.enabled(instance.namespace);
+		}
+	}
 
-      if (namespaces[0] === '-') {
-        createDebug.skips.push(new RegExp('^' + namespaces.substr(1) + '$'));
-      } else {
-        createDebug.names.push(new RegExp('^' + namespaces + '$'));
-      }
-    }
+	/**
+	* Disable debug output.
+	*
+	* @return {String} namespaces
+	* @api public
+	*/
+	function disable() {
+		const namespaces = [
+			...createDebug.names.map(toNamespace),
+			...createDebug.skips.map(toNamespace).map(namespace => '-' + namespace)
+		].join(',');
+		createDebug.enable('');
+		return namespaces;
+	}
 
-    for (i = 0; i < createDebug.instances.length; i++) {
-      var instance = createDebug.instances[i];
-      instance.enabled = createDebug.enabled(instance.namespace);
-    }
-  }
-  /**
-  * Disable debug output.
-  *
-  * @api public
-  */
+	/**
+	* Returns true if the given mode name is enabled, false otherwise.
+	*
+	* @param {String} name
+	* @return {Boolean}
+	* @api public
+	*/
+	function enabled(name) {
+		if (name[name.length - 1] === '*') {
+			return true;
+		}
 
+		let i;
+		let len;
 
-  function disable() {
-    createDebug.enable('');
-  }
-  /**
-  * Returns true if the given mode name is enabled, false otherwise.
-  *
-  * @param {String} name
-  * @return {Boolean}
-  * @api public
-  */
+		for (i = 0, len = createDebug.skips.length; i < len; i++) {
+			if (createDebug.skips[i].test(name)) {
+				return false;
+			}
+		}
 
+		for (i = 0, len = createDebug.names.length; i < len; i++) {
+			if (createDebug.names[i].test(name)) {
+				return true;
+			}
+		}
 
-  function enabled(name) {
-    if (name[name.length - 1] === '*') {
-      return true;
-    }
+		return false;
+	}
 
-    var i;
-    var len;
+	/**
+	* Convert regexp to namespace
+	*
+	* @param {RegExp} regxep
+	* @return {String} namespace
+	* @api private
+	*/
+	function toNamespace(regexp) {
+		return regexp.toString()
+			.substring(2, regexp.toString().length - 2)
+			.replace(/\.\*\?$/, '*');
+	}
 
-    for (i = 0, len = createDebug.skips.length; i < len; i++) {
-      if (createDebug.skips[i].test(name)) {
-        return false;
-      }
-    }
+	/**
+	* Coerce `val`.
+	*
+	* @param {Mixed} val
+	* @return {Mixed}
+	* @api private
+	*/
+	function coerce(val) {
+		if (val instanceof Error) {
+			return val.stack || val.message;
+		}
+		return val;
+	}
 
-    for (i = 0, len = createDebug.names.length; i < len; i++) {
-      if (createDebug.names[i].test(name)) {
-        return true;
-      }
-    }
+	createDebug.enable(createDebug.load());
 
-    return false;
-  }
-  /**
-  * Coerce `val`.
-  *
-  * @param {Mixed} val
-  * @return {Mixed}
-  * @api private
-  */
-
-
-  function coerce(val) {
-    if (val instanceof Error) {
-      return val.stack || val.message;
-    }
-
-    return val;
-  }
-
-  createDebug.enable(createDebug.load());
-  return createDebug;
+	return createDebug;
 }
 
 module.exports = setup;
 
-
-},{"ms":"IfYP"}],"g5I+":[function(require,module,exports) {
+},{"ms":"IfYP"}],"g5IB":[function(require,module,exports) {
 
 // shim for using process in browser
 var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
@@ -741,30 +758,13 @@ process.chdir = function (dir) {
 process.umask = function () {
   return 0;
 };
-},{}],"j+D9":[function(require,module,exports) {
+},{}],"jD9Y":[function(require,module,exports) {
 var process = require("process");
-"use strict";
-
-function _typeof(obj) {
-  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-    _typeof = function _typeof(obj) {
-      return typeof obj;
-    };
-  } else {
-    _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    };
-  }
-
-  return _typeof(obj);
-}
 /* eslint-env browser */
 
 /**
  * This is the web browser implementation of `debug()`.
  */
-
-
 exports.log = log;
 exports.formatArgs = formatArgs;
 exports.save = save;
@@ -820,14 +820,14 @@ function formatArgs(args) {
     return;
   }
 
-  var c = 'color: ' + this.color;
+  const c = 'color: ' + this.color;
   args.splice(1, 0, c, 'color: inherit'); // The final "%c" is somewhat tricky, because there could be other
   // arguments passed either before or after the %c, so we need to
   // figure out the correct index to insert the CSS into
 
-  var index = 0;
-  var lastC = 0;
-  args[0].replace(/%[a-zA-Z%]/g, function (match) {
+  let index = 0;
+  let lastC = 0;
+  args[0].replace(/%[a-zA-Z%]/g, match => {
     if (match === '%%') {
       return;
     }
@@ -850,12 +850,10 @@ function formatArgs(args) {
  */
 
 
-function log() {
-  var _console; // This hackery is required for IE8/9, where
+function log(...args) {
+  // This hackery is required for IE8/9, where
   // the `console.log` function doesn't have 'apply'
-
-
-  return (typeof console === "undefined" ? "undefined" : _typeof(console)) === 'object' && console.log && (_console = console).log.apply(_console, arguments);
+  return typeof console === 'object' && console.log && console.log(...args);
 }
 /**
  * Save `namespaces`.
@@ -885,7 +883,7 @@ function save(namespaces) {
 
 
 function load() {
-  var r;
+  let r;
 
   try {
     r = exports.storage.getItem('debug');
@@ -923,7 +921,9 @@ function localstorage() {
 }
 
 module.exports = require('./common')(exports);
-var formatters = module.exports.formatters;
+const {
+  formatters
+} = module.exports;
 /**
  * Map %j to `JSON.stringify()`, since no Web Inspectors do that by default.
  */
@@ -935,7 +935,7 @@ formatters.j = function (v) {
     return '[UnexpectedJSONParseError]: ' + error.message;
   }
 };
-},{"./common":"MTTc","process":"g5I+"}],"bEsR":[function(require,module,exports) {
+},{"./common":"MTTc","process":"g5IB"}],"bEsR":[function(require,module,exports) {
 "use strict";
 
 const debug = require("debug")("GdfsEvent");
@@ -987,7 +987,7 @@ GdfsEvent.prototype.fire = function (extraData = {}) {
 };
 
 module.exports = GdfsEvent;
-},{"debug":"j+D9"}],"B8ln":[function(require,module,exports) {
+},{"debug":"jD9Y"}],"B8ln":[function(require,module,exports) {
 "use strict";
 
 const debug = require("debug")("GdfsPath");
@@ -1217,7 +1217,7 @@ GdfsPath.prototype.toString = function () {
 };
 
 module.exports = GdfsPath;
-},{"debug":"j+D9"}],"YTm0":[function(require,module,exports) {
+},{"debug":"jD9Y"}],"YTm0":[function(require,module,exports) {
 /*global gapi:false*/
 "use strict";
 
@@ -1279,11 +1279,11 @@ Gdfs.signInStatusChangeEvent = new GdfsEvent(window, "gdfs-signin-status-change"
  * But it is wrapped by this class so the users should not use it directly.
  *
  * @param {string} clientId A clientId from the Developer console.
- * @param {string} apiKey An apiKey from the Developer console.
+ * @param {string} clientSecret An clientSecret from the Developer console.
  * @returns {Promise} A promise that will be resolved when the loading completed.
  */
 
-Gdfs.loadApi = (clientId, apiKey) => {
+Gdfs.loadApi = (clientId, clientSecret) => {
   debug("Start of Gdfs.loadApi");
   const script = document.createElement("SCRIPT");
   script.setAttribute("async", "async");
@@ -1295,12 +1295,12 @@ Gdfs.loadApi = (clientId, apiKey) => {
       gapi.load("client:auth2", async () => {
         debug("initialize gapi.client");
 
-        if (typeof clientId === "object" && apiKey == null && "clientId" in clientId && "apiKey" in clientId && "discoveryDocs" in clientId && "scope" in clientId) {
+        if (typeof clientId === "object" && clientSecret == null && "clientId" in clientId && "clientSecret" in clientId && "discoveryDocs" in clientId && "scope" in clientId) {
           await gapi.client.init(clientId);
         } else {
           await gapi.client.init({
-            clientId: clientId,
-            apiKey: apiKey,
+            clientId,
+            clientSecret,
             discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"],
             scope: ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.appdata", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive.metadata", "https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.photos.readonly", "https://www.googleapis.com/auth/drive.readonly"].join(" ")
           });
@@ -1981,7 +1981,7 @@ Gdfs.prototype.readdir = async function (path, options) {
   const readAll = options == null;
   options = options || {};
   const pageSize = options.pageSize || 10;
-  const pageToken = options.pageToken || null;
+  let pageToken = options.pageToken || null;
 
   const readFiles = async params => {
     debug(`readdir: params: ${JSON.stringify(params, null, "  ")}`);
@@ -2003,11 +2003,13 @@ Gdfs.prototype.readdir = async function (path, options) {
   };
 
   if (!readAll) {
+    // eslint-disable-next-line require-atomic-updates
     options.pageToken = await readFiles(params);
   } else {
     do {
-      params.pageToken = await readFiles(params);
-    } while (params.pageToken != null);
+      // eslint-disable-next-line require-atomic-updates
+      options.pageToken = await readFiles(params);
+    } while (options.pageToken != null);
   }
 
   debug(`readdir: files: ${JSON.stringify(files)}`);
@@ -2321,7 +2323,7 @@ Gdfs.prototype.writeFile = async function (path, mimeType, data) {
 };
 
 module.exports = Gdfs;
-},{"debug":"j+D9","./gdfs-event.js":"bEsR","./gdfs-path.js":"B8ln"}],"6V4r":[function(require,module,exports) {
+},{"debug":"jD9Y","./gdfs-event.js":"bEsR","./gdfs-path.js":"B8ln"}],"V4rw":[function(require,module,exports) {
 "use strict";
 
 const debug = require("debug")("gdfs-ui");
@@ -2545,7 +2547,7 @@ GdfsUi.prototype.writeFile = async function (filename, mimeType, data) {
 };
 
 module.exports = GdfsUi;
-},{"debug":"j+D9","./gdfs.js":"YTm0","./gdfs-event.js":"bEsR"}],"Focm":[function(require,module,exports) {
+},{"debug":"jD9Y","./gdfs.js":"YTm0","./gdfs-event.js":"bEsR"}],"Focm":[function(require,module,exports) {
 "use strict";
 
 const debug = require("debug")("gdrive-fs");
@@ -2566,4 +2568,4 @@ try {
 }
 
 module.exports = Gdfs;
-},{"debug":"j+D9","./lib/gdfs.js":"YTm0","./lib/gdfs-ui.js":"6V4r","./lib/gdfs-path.js":"B8ln"}]},{},["Focm"], null)
+},{"debug":"jD9Y","./lib/gdfs.js":"YTm0","./lib/gdfs-ui.js":"V4rw","./lib/gdfs-path.js":"B8ln"}]},{},["Focm"], null)

@@ -7,7 +7,7 @@ const Cookies = require("js-cookie");
 function GdfsWebTestSigner() {
     this.createUi();
     this._txtClientId = document.querySelector("#txtClientId");
-    this._txtApiKey = document.querySelector("#txtApiKey");
+    this._txtClientSecret = document.querySelector("#txtClientSecret");
     this._btnConnect = document.querySelector("#btnConnect");
     this._btnConnect.onclick = () => this.connect();
     this._prepared = false;
@@ -15,7 +15,7 @@ function GdfsWebTestSigner() {
 
 GdfsWebTestSigner.prototype.createUi = function() {
     const clientId = Cookies.get("clientId") || null;
-    const apiKey = Cookies.get("apiKey") || null;
+    const clientSecret = Cookies.get("clientSecret") || null;
     const authPanel = document.createElement("DIV");
     const testControl = document.querySelector("#test-control");
     testControl.appendChild(authPanel);
@@ -38,12 +38,12 @@ GdfsWebTestSigner.prototype.createUi = function() {
                 <div style="height:24px;">
                     <label>
                         <span style="display:inline-block;width:60px;">
-                            apiKey
+                            clientSecret
                         </span>
                         <span style="display:inline-block; padding:0; margin: 0;">
-                            <input id="txtApiKey" type="text" size="70"
+                            <input id="txtClientSecret" type="text" size="70"
                                     style="margin:0; width:525px; height: 24px;"
-                                    value="${apiKey||''}"/>
+                                    value="${clientSecret||''}"/>
                         </span>
                     </label>
                 </div>
@@ -77,7 +77,7 @@ GdfsWebTestSigner.prototype.prepare = function() {
             try {
                 if(Gdfs.isSignedIn()) {
                     this._txtClientId.setAttribute("disabled", "disabled");
-                    this._txtApiKey.setAttribute("disabled", "disabled");
+                    this._txtClientSecret.setAttribute("disabled", "disabled");
                     this._btnConnect.setAttribute("disabled", "disabled");
                     this.setStatus( "The connection establed and a user signed in" );
                     this._prepared = true;
@@ -107,13 +107,13 @@ GdfsWebTestSigner.prototype.done = function() {
 GdfsWebTestSigner.prototype.connect = async function() {
     try {
         const clientId = this._txtClientId.value;
-        const apiKey = this._txtApiKey.value;
+        const clientSecret = this._txtClientSecret.value;
         debug(`clientId: ${clientId}`);
-        debug(`apiKey: ${apiKey}`);
+        debug(`clientSecret: ${clientSecret}`);
         this.setStatus( "The test is connecting to Google Drive API ..." );
-        await Gdfs.loadApi(clientId, apiKey);
+        await Gdfs.loadApi(clientId, clientSecret);
         Cookies.set("clientId", clientId, { "expires" : 365 * 100 });
-        Cookies.set("apiKey", apiKey, { "expires" : 365 * 100 });
+        Cookies.set("clientSecret", clientSecret, { "expires" : 365 * 100 });
     } catch(err) {
         this.setStatus( `Error ${err.message}` );
         debug(err.stack);
