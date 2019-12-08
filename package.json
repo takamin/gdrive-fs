@@ -1,15 +1,14 @@
 {
   "name": "gdrive-fs",
-  "version": "1.1.5",
+  "version": "2.0.0",
   "description": "Google Drive file system for Web App.",
   "main": "gdrive-fs.js",
   "scripts": {
     "generate-docs": "jsdoc --configure jsdoc.json --verbose",
     "release": "eslint . && mocha && parcel build index.js --detailed-report -d build -o gdrive-fs.min.js && parcel build index.js --no-minify --no-source-maps --detailed-report -d build -o gdrive-fs.js && jsdoc --configure jsdoc.json --verbose",
-    "lint": "eslint",
-    "opn": "node -e require('opn')('http://localhost:1234/')",
+    "lint": "eslint .",
     "parcel": "parcel",
-    "start": "eslint . && mocha && parcel -- public/index.html",
+    "start": "eslint . && mocha && parcel public/index.html --open",
     "test": "eslint . && mocha",
     "web-test": "eslint . && parcel test/web-test.html --open"
   },
@@ -33,15 +32,15 @@
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "chai": "^4.2.0",
-    "eslint": "^5.16.0",
-    "js-cookie": "^2.2.0",
+    "eslint": "^6.7.2",
+    "js-cookie": "^2.2.1",
     "jsdoc": "^3.6.3",
-    "mocha": "^5.2.0",
-    "opn": "^5.5.0",
-    "parcel-bundler": "^1.12.3",
+    "mocha": "^6.2.2",
+    "open": "^7.0.0",
+    "parcel-bundler": "^1.12.4",
     "yea-stringify": "^1.0.1"
   },
   "dependencies": {
-    "debug": "^3.2.6"
+    "debug": "^4.1.1"
   }
 }

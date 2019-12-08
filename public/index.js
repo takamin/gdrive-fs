@@ -14,24 +14,24 @@ const main = () => {
     const txtApiKey = createElement("INPUT",
         { "type": "text", "id": "txtApiKey", "size": 40, });
     const clientId = Cookies.get("clientId");
-    const apiKey = Cookies.get("apiKey");
+    const clientSecret = Cookies.get("clientSecret");
     if(clientId){
         txtClientId.setAttribute("value", clientId);
     }
-    if(apiKey) {
-        txtApiKey.setAttribute("value", apiKey);
+    if(clientSecret) {
+        txtApiKey.setAttribute("value", clientSecret);
     }
     const btnConnect = createButton("Connect Google Drive API", async () => {
         debug("Connect.click");
         try {
             const clientId = document.querySelector("#txtClientId").value;
-            const apiKey = document.querySelector("#txtApiKey").value;
+            const clientSecret = document.querySelector("#txtApiKey").value;
             debug(`clientId: ${clientId}`);
-            debug(`apiKey: ${apiKey}`);
+            debug(`clientSecret: ${clientSecret}`);
             createAuthPanel(authPanel, fileDlgs);
-            await Gdfs.loadApi(clientId, apiKey);
+            await Gdfs.loadApi(clientId, clientSecret);
             Cookies.set("clientId", clientId, { "expires" : 365 * 100 });
-            Cookies.set("apiKey", apiKey, { "expires" : 365 * 100 });
+            Cookies.set("clientSecret", clientSecret, { "expires" : 365 * 100 });
             if(Gdfs.isSignedIn()) {
                 for(const element of fileDlgs) {
                     createFileList(element);
@@ -45,7 +45,7 @@ const main = () => {
     authPanel.appendChild(text("clientId: "));
     authPanel.appendChild(txtClientId);
     authPanel.appendChild(createElement("BR"));
-    authPanel.appendChild(text("apiKey: "));
+    authPanel.appendChild(text("clientSecret: "));
     authPanel.appendChild(txtApiKey);
     authPanel.appendChild(createElement("BR"));
     authPanel.appendChild(btnConnect);

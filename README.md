@@ -3,6 +3,13 @@ gdrive-fs
 
 Google Drive API client for Web Application.
 
+__CAUTION:__
+After v2.0.0, The API loadApi is changed. It needs clientSecret at its second
+parameter instead of apiKey.
+It is needed to clear the cookies of the web pages running by command `npm start` or
+`npm run web-test`. On the pages, the API key has been saved to cookies to connect
+Google drive APIs.
+
 A brief explanation is described in a documet for the class
 [Gdfs](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs.html).
 
@@ -11,7 +18,7 @@ APIs
 
 * Class [Gdfs](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs.html) as a client of the Google Drive file system.
     * Class methods
-        * async [`loadApi(clientId, apiKey)`](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#.loadApi) loads Google Drive APIs(v3) and initializes its client.
+        * async [`loadApi(clientId, clientSecret)`](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#.loadApi) loads Google Drive APIs(v3) and initializes its client.
         * [`isSignedIn()`](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#.isSignedIn) tests the client is signed-in to the Google Drive.
         * async [`signIn()`](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#.signIn) signs-in with a Google Account.
         * async [`signOut()`](https://takamin.github.io/gdrive-fs/jsdoc/Gdfs#.signOut) signs-out.
