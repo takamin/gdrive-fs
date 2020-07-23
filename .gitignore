@@ -2,3 +2,5 @@ dist/
 .cache/
 node_modules/
 jsdoc/
+.nyc_output/
+coverage/

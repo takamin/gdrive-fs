@@ -1,6 +1,8 @@
 gdrive-fs
 =========
 
+[![Build Status](https://travis-ci.org/takamin/gdrive-fs.svg?branch=master)](https://travis-ci.org/takamin/gdrive-fs)
+
 Google Drive API client for Web Application.
 
 __CAUTION:__

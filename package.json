@@ -1,15 +1,17 @@
 {
   "name": "gdrive-fs",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Google Drive file system for Web App.",
   "main": "gdrive-fs.js",
   "scripts": {
+    "coverage": "nyc --reporter=html --reporter=text mocha",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "generate-docs": "jsdoc --configure jsdoc.json --verbose",
     "release": "eslint . && mocha && parcel build index.js --detailed-report -d build -o gdrive-fs.min.js && parcel build index.js --no-minify --no-source-maps --detailed-report -d build -o gdrive-fs.js && jsdoc --configure jsdoc.json --verbose",
     "lint": "eslint .",
     "parcel": "parcel",
-    "start": "eslint . && mocha && parcel public/index.html --open",
-    "test": "eslint . && mocha",
+    "start": "npm test && parcel public/index.html --open",
+    "test": "eslint . && nyc mocha 'test/*.test.js'",
     "web-test": "eslint . && parcel test/web-test.html --open"
   },
   "repository": {
@@ -32,11 +34,13 @@
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "chai": "^4.2.0",
+    "coveralls": "^3.1.0",
     "eslint": "^6.8.0",
     "js-cookie": "^2.2.1",
-    "jsdoc": "^3.6.3",
-    "mocha": "^7.1.0",
-    "open": "^7.0.3",
+    "jsdoc": "^3.6.4",
+    "mocha": "^7.2.0",
+    "nyc": "^15.1.0",
+    "open": "^7.1.0",
     "parcel-bundler": "^1.12.4",
     "yea-stringify": "^1.0.1"
   },
