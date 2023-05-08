@@ -1,6 +1,6 @@
 {
   "name": "gdrive-fs",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Google Drive file system for Web App.",
   "main": "gdrive-fs.js",
   "scripts": {
