@@ -35,7 +35,7 @@
     "babel-preset-env": "^1.7.0",
     "chai": "^4.2.0",
     "coveralls": "^3.1.0",
-    "eslint": "^6.8.0",
+    "eslint": "^9.36.0",
     "js-cookie": "^2.2.1",
     "jsdoc": "^3.6.4",
     "mocha": "^10.2.0",
