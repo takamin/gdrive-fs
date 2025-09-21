@@ -38,6 +38,20 @@ describe("class GdfsPath", () => {
             const path = new GdfsPath("../bar");
             assert.equal("../bar", path.toString());
         });
+        it("should be initialized with a escaped char", () => {
+            const path = new GdfsPath("foo\\\"bar");
+            assert.equal(path.toString(), "foo\"bar");
+        });
+        it("should throw if the path is empty string", () => {
+            assert.throw(()=>{
+                new GdfsPath("");
+            });
+        });
+        it("should throw if the path ends with an incomplete escape char", () => {
+            assert.throw(()=>{
+                new GdfsPath("foo\\");
+            });
+        });
     });
     describe("#isAbsolute", () => {
         it("should be true if the path starts with a slash", () => {
